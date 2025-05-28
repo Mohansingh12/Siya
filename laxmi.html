@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Happy Birthday!</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Comic Sans MS', cursive, sans-serif;
+      background: linear-gradient(to right, #ffb6c1, #add8e6);
+      color: #333;
+      text-align: center;
+      overflow-x: hidden;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      flex-direction: column;
+      position: relative;
+      z-index: 1;
+    }
+
+    h1 {
+      font-size: 3.5rem;
+      font-weight: bold;
+      color: #fff;
+      text-shadow: 2px 2px 6px rgba(0, 0, 0, 0.4);
+      z-index: 2;
+    }
+    .center-button {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 20px;
+}
+
+
+    .section {
+      display: none;
+      padding: 30px;
+      max-width: 800px;
+      background-color: rgba(255, 255, 255, 0.95);
+      border-radius: 20px;
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.25);
+      font-size: 1.3rem;
+      color: #222;
+      line-height: 1.6;
+      margin-top: 20px;
+      z-index: 2;
+      position: relative;
+    }
+
+    .slider {
+      width: 90%;
+      max-width: 500px;
+      aspect-ratio: 1 / 1;
+      overflow: hidden;
+      border-radius: 20px;
+      box-shadow: 0 6px 15px rgba(0, 0, 0, 0.3);
+      margin: 0 auto;
+      position: relative;
+    }
+
+    .slider img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      position: absolute;
+      top: 0;
+      left: 0;
+      opacity: 0;
+      transition: opacity 0.5s ease;
+    }
+
+    .slider img.active {
+      opacity: 1;
+      position: relative;
+    }
+
+    .cake-button, .next-button, .blow-button {
+      font-size: 3rem;
+      width: 120px;
+      height: 120px;
+      margin: 20px;
+      background-color: transparent;
+      color: #ff69b4;
+      border: 3px solid #ff69b4;
+      border-radius: 50%;
+      cursor: pointer;
+      box-shadow: 0 4px 6px rgba(0,0,0,0.2);
+      transition: background-color 0.3s, transform 0.3s;
+      display: inline-flex;
+      justify-content: center;
+      align-items: center;
+      z-index: 2;
+    }
+
+    .cake-button:hover, .next-button:hover, .blow-button:hover {
+      background-color: #ff69b4;
+      color: white;
+      transform: scale(1.1);
+    }
+    .blow-button {
+      position: center;
+      
+    }
+
+    .poppers {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      background: url('https://media3.giphy.com/media/v1.Y2lkPTc5MGI3NjExZXg5Y3R0NTB5b2E4MW5xdGtwMHFrdXMzYTRjbWVqNjJqdTY4dGhtMiZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/5T06ftQWtCMy0XFaaI/giphy.gif') repeat center center;
+      background-size: 300px;
+      pointer-events: none;
+      z-index: 0;
+      opacity: 0.3;
+    }
+
+    #cakeGif {
+      width: 200px;
+      margin-top: 10px;
+      position: relative;
+      z-index: 3;
+    }
+
+    #cakeContainer {
+      position: relative;
+      display: inline-block;
+    }
+
+    #candles {
+      position: absolute;
+      top: 20px;
+      left: 50%;
+      transform: translateX(-50%);
+      display: flex;
+      flex-wrap: wrap;
+      gap: 4px;
+      width: 240px;
+      justify-content: center;
+      pointer-events: none;
+    }
+
+    .flame {
+      width: 10px;
+      height: 20px;
+      background: radial-gradient(circle, #ff0, orange, red);
+      border-radius: 50%;
+      animation: flicker 0.3s infinite alternate;
+    }
+
+    @keyframes flicker {
+      0% { transform: scale(1) translateY(0); opacity: 1; }
+      100% { transform: scale(1.2) translateY(-2px); opacity: 0.7; }
+    }
+
+    #confetti {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: 0;
+    }
+  </style>
+</head>
+<body>
+  <canvas id="confetti"></canvas>
+  <div class="poppers"></div>
+
+  <audio id="birthdayAudio" loop>
+    <source src="Jhol.mp3" type="audio/mpeg">
+  </audio>
+
+  <h1>Happy Birthday Pookie 🎉🎂</h1>
+  <button class="cake-button" id="cakeButton" onclick="showMessage()">🎂</button>
+  <img id="cakeGif" src="https://media0.giphy.com/media/v1.Y2lkPTc5MGI3NjExc3AxYXlteWgzbGdoZ3c4Zm1hdG9lZG9ndmt2azlqcW13YWJ0dmNkZSZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/h7G0R3b5ZwmAZ9y4gE/giphy.gif" alt="cake gif" />
+
+  <section id="message" class="section">
+    <p>
+      Dear Pookie,<br>
+      Today is all about you. I just want to say how lucky I am to have you in my life. 
+      You bring so much joy and light. Wishing you the most beautiful day and an even better year ahead. 💖
+    </p>
+    <button class="next-button" onclick="showCake()">🎉</button>
+  </section>
+
+  <section id="cakeSection" class="section">
+    <div id="cakeContainer">
+      <img src="images.jpg" alt="cake" style="width:300px;" />
+      <div id="candles">
+        <span class="flame"></span>
+<span class="flame"></span>
+<span class="flame"></span>
+<span class="flame"></span>
+<span class="flame"></span>
+<span class="flame"></span>
+<span class="flame"></span>
+<span class="flame"></span>
+<span class="flame"></span>
+<span class="flame"></span>
+<span class="flame"></span>
+<span class="flame"></span>
+<span class="flame"></span>
+<span class="flame"></span>
+<span class="flame"></span>
+<span class="flame"></span>
+<span class="flame"></span>
+<span class="flame"></span>
+<span class="flame"></span>
+<span class="flame"></span>
+<span class="flame"></span>
+<span class="flame"></span>
+
+      </div>
+       
+    </div>
+    <div class="center-button">
+  <button class="next-button blow-button" onclick="blowCandles()">💨 Blow</button>
+</div>
+  </section>
+
+  <section id="gallery" class="section">
+    <div class="slider" id="slider">
+      <img src="1.jpg" class="active" />
+      <img src="2.jpg" />
+      <img src="3.jpg" />
+      <img src="4.jpg" />
+      <img src="5.jpg" />
+      <img src="6.jpg" />
+      <img src="7.jpg" />
+      <img src="8.jpg" />
+      <img src="9.jpg" />
+      <img src="10.jpg" />
+    </div>
+    <button class="next-button" onclick="nextSlide()">➡️</button>
+  </section>
+
+  <script src="https://cdn.jsdelivr.net/npm/confetti-js@0.0.18/dist/index.min.js"></script>
+  <script>
+    const confettiSettings = { target: 'confetti' };
+    const confetti = new ConfettiGenerator(confettiSettings);
+    confetti.render();
+
+    function showMessage() {
+      document.getElementById('message').style.display = 'block';
+      document.getElementById('cakeButton').style.display = 'none';
+      document.getElementById('cakeGif').style.display = 'none';
+
+      const audio = document.getElementById('birthdayAudio');
+      audio.play().catch(e => console.log("Autoplay blocked:", e));
+    }
+
+    function showCake() {
+      document.getElementById('message').style.display = 'none';
+      document.getElementById('cakeSection').style.display = 'block';
+    }
+
+    function blowCandles() {
+      const flames = document.querySelectorAll('.flame');
+      flames.forEach(f => f.style.display = 'none');
+
+      setTimeout(() => {
+        document.getElementById('cakeSection').style.display = 'none';
+        document.getElementById('gallery').style.display = 'block';
+      }, 2000);
+    }
+
+    let slideIndex = 0;
+    function nextSlide() {
+      const images = document.querySelectorAll('#slider img');
+      images[slideIndex].classList.remove('active');
+      slideIndex = (slideIndex + 1) % images.length;
+      images[slideIndex].classList.add('active');
+    }
+  </script>
+</body>
+</html>
